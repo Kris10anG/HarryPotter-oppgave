@@ -12,7 +12,7 @@ namespace HarryPotter_oppgave
         public int Price { get; private set; }
         public string Keypress { get; private set; }
 
-        public Item(string name, int price, string keypress)
+        public Item(string name, int price, string keypress, int damage)
         {
             Name = name;
             Price = price;

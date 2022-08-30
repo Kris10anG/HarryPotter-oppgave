@@ -17,10 +17,11 @@ namespace HarryPotter_oppgave
         public int Money { get; private set; }
         public int MoreMoney { get; private set; }
         public bool IsAlive { get; private set; }
+        public string QuidditchRole { get; private set; }
         public List<Item> Items { get; private set; }
 
 
-        public HarryPotterCharacter(string name, int health, int damage, string house, int money, bool isalive)
+        public HarryPotterCharacter(string name, int health, int damage, string house, int money, bool isalive, string quidditchRole)
         {
             Name = name;
             Health = health;
@@ -29,6 +30,7 @@ namespace HarryPotter_oppgave
             Money = money;
             MoreMoney = money;
             IsAlive = isalive;
+            QuidditchRole = quidditchRole;
             Items = new List<Item>();
         }
 
@@ -85,6 +87,42 @@ namespace HarryPotter_oppgave
         {
             Health -= damage;
             Console.WriteLine($"{Name} tok a hit. HP {Health}");
+        }
+
+        public void DealDamage(Voldemort voldemort)
+        {
+
+            voldemort.TakeDamage(Damage);
+            //voldemort.CheckDeath();
+            
+        }
+
+        public void IncreaseDamage(int damage)
+        {
+            Damage = damage;
+            Console.WriteLine($"Damage has increased to {Damage}");
+        }
+
+        public void CheckDeath()
+        {
+            if (Health <= 0)
+            {
+                IsAlive = false;
+                Console.WriteLine($"{Name} is DEAD!");
+
+                //Environment.Exit(0);
+
+            }
+
+        }
+
+
+        public void SendLetterWithOwl(Letter letterToSend, Voldemort voldemort)
+        {
+            
+            voldemort.ReciveLetterFromOwl(letterToSend);
+//Hva skal funksjonen gjøre her? Jo den skal sende et brev med ugle
+//
         }
     }
 

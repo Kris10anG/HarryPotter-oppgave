@@ -10,65 +10,85 @@ namespace HarryPotter_oppgave
         
         static void Main(string[] args)
         {
-            var HarryPotterCharacter = new HarryPotterCharacter("Kris10an", 200, 0, "Gryffindor", 100, true);
+            var harryPotterCharacter = new HarryPotterCharacter("Kris10an", 200, 0, "Gryffindor", 100, true, "seeker");
             var voldemortCharacter = new Voldemort($"Voldemort", 100, true);
-
+            
             var magicstore = new MagicStore();
+
             
-            
+
+
             //var question = Console.ReadLine();
             while (true)
             {
-                Console.WriteLine($"Hello {HarryPotterCharacter.Name}! Press y to see your stats," +
-                                  $" u for going to the Magic store, i for some Moneymagic" +
-                                  $", o for some epic magic!, \n" +
-                                  $"p for exit!");
+                Console.WriteLine($"Hello {harryPotterCharacter.Name}! Write stats to see your stats," +
+                                  $" store for going to the Magic store, money for making some wizardmoney" +
+                                  $", magic for some epic magic!, " +
+                                  $"letter to send a letter" +
+                                  $"exit for exit!");
                 var command = Console.ReadLine();
 
             switch (command)
                 {
-                    case "y":
-                        HarryPotterCharacter.ShowInformation();
+                                
 
-                        Console.WriteLine($"Name: {HarryPotterCharacter.Name}\n House: {HarryPotterCharacter.House}\n" +
-                        $"WizardMoney {HarryPotterCharacter.Money}\n");
+                    case "stats":
+                        harryPotterCharacter.ShowInformation();
+
+                        Console.WriteLine($"Name: {harryPotterCharacter.Name}\n House: {harryPotterCharacter.House}\n" +
+                        $"WizardMoney {harryPotterCharacter.Money}\n");
                         
                         break;
 
-                    case "u":
+                    case "store":
                     {
-                        magicstore.ShowItems();
+                        Console.WriteLine($"What magicitems are you looking for?\n" +
+                                          $"(type Wand, broom or Pet?)");
+                        var whitchShop = Console.ReadLine();
+                        magicstore.ShowPetsAndWands(whitchShop);
+                        
                         Console.WriteLine($"What do you want to buy?");
                         var question = Console.ReadLine();
 
-                        magicstore.SellMagicalItems(question, HarryPotterCharacter);
+                        magicstore.SellMagicalItems(question, harryPotterCharacter, whitchShop);
                         break;
                     }
-                    case "i":
+                    case "money":
                         var mathQuestion = Console.ReadLine();
 
                         var magicalNumber = Convert.ToInt32(mathQuestion);
                         
-                        var mathSpell =  HarryPotterCharacter.DoMathMagic(magicalNumber);
+                        var mathSpell = harryPotterCharacter.DoMathMagic(magicalNumber);
                         Console.WriteLine(mathSpell);
                         break;
-                    case "o":
-                        Console.WriteLine($"Kom igjen {HarryPotterCharacter.Name}!" +
+                    case "magic":
+                        Console.WriteLine($"Kom igjen {harryPotterCharacter.Name}!" +
                                           $"Bruk dine magiske trylleevner og få fjærden til å sveve...\n" +
                                           $"Hint (vingardium leviosa)");
 
                         var spellQuestion = Console.ReadLine();
 
-                        HarryPotterCharacter.MakeFeatherFly(spellQuestion);
+                        harryPotterCharacter.MakeFeatherFly(spellQuestion);
                         break;
-                    case "p":
+                    case "exit":
                         Environment.Exit(0);
                         break;
+                    case "letter":
+                        var message = Console.ReadLine();
+                        var letter = new Letter(message);
+                        harryPotterCharacter.SendLetterWithOwl(letter, voldemortCharacter);
+                        break;
+                    case "voldemort":
+                        voldemortCharacter.ShowInventory();
+                        break;
                     case "battle":
-                        while (!HarryPotterCharacter.IsAlive || !voldemortCharacter.IsAlive)
+                        while (harryPotterCharacter.IsAlive && voldemortCharacter.IsAlive)
                         {
-                            WizardFight(HarryPotterCharacter, voldemortCharacter, HarryPotterCharacter.CheckItem())
+                            WizardFight(harryPotterCharacter, voldemortCharacter);
                         }
+                        break;
+                    case "quidditch":
+                        var match = new Match();
                         break;
                 }
             
@@ -77,19 +97,21 @@ namespace HarryPotter_oppgave
 
         }
 
-        public void WizardFight(HarryPotterCharacter Character, Voldemort voldemort, int damage)
+        public static void WizardFight(HarryPotterCharacter character, Voldemort voldemort)
         {
-            Character.CheckItem();
-            voldemort.TakeDamage(damage);
-            Character.TakeDamage(damage);
+            
+            voldemort.DealDamageTo(character);
+            character.CheckDeath();
+            if (!character.IsAlive)
+            {
+              return;  
+            }
+            character.DealDamage(voldemort);
+            voldemort.CheckDeath();
+
         }
 
-        public int WizardDamage(int min, int max)
-        {
-            var random = new Random();
-            var damage = random.Next(min, max);
-            return damage;
-        }
+
 
         //public bool CheckItem(HarryPotterCharacter character)
         //{
