@@ -74,6 +74,7 @@ namespace HarryPotter_oppgave
                         Environment.Exit(0);
                         break;
                     case "letter":
+                        Console.WriteLine($"Hva vil du skrive til Voldemort!");
                         var message = Console.ReadLine();
                         var letter = new Letter(message);
                         harryPotterCharacter.SendLetterWithOwl(letter, voldemortCharacter);
